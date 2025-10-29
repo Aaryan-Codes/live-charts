@@ -111,7 +111,7 @@ udpServer.on('message', (msg, rinfo) => {
         performanceMetrics.avgLatency = 
             (performanceMetrics.avgLatency + processingLatency) / 2;
         
-        console.log(`Received UDP message from ${rinfo.address}:${rinfo.port} - Latency: ${processingLatency}ms`);
+        // console.log(`Received UDP message from ${rinfo.address}:${rinfo.port} - Latency: ${processingLatency}ms`);
         
         // Kafka-ready: Send individual messages (not batched)
         io.emit("telemetryData", {

@@ -7,6 +7,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { GrAssistListening } from 'react-icons/gr';
+import { BiQuestionMark } from 'react-icons/bi';
+import { FaCircle, FaPlay, FaPause, FaStop, FaTrash } from 'react-icons/fa';
+import { MdSpeed, MdMemory, MdRocket } from 'react-icons/md';
+import { IoMdThunderstorm } from 'react-icons/io';
+import { RiSlowDownLine } from 'react-icons/ri';
 
 interface FlightTelemetry {
   timestamp: string;
@@ -205,7 +211,7 @@ const SpeedChart: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    socketRef.current = io('https://live-charts.vercel.app/');
+    socketRef.current = io('https://live-charts.onrender.com');
 
     socketRef.current.on('connect', () => {
       console.log('Connected to server');
@@ -303,30 +309,30 @@ const SpeedChart: React.FC = () => {
   const getStatusBadge = () => {
     switch (connectionStatus) {
       case 'connected':
-        return <Badge className="bg-green-500 hover:bg-green-600">🟢 Connected</Badge>;
+        return <Badge className="bg-green-500 hover:bg-green-600"><FaCircle className="mr-1" /> Connected</Badge>;
       case 'connecting':
-        return <Badge variant="secondary">🟡 Connecting...</Badge>;
+        return <Badge variant="secondary"><FaCircle className="mr-1" /> Connecting...</Badge>;
       case 'disconnected':
-        return <Badge variant="destructive">🔴 Disconnected</Badge>;
+        return <Badge variant="destructive"><FaCircle className="mr-1" /> Disconnected</Badge>;
     }
   };
 
   const getPerformanceBadge = () => {
-    if (processingStats.fps > 30) return <Badge className="bg-green-500">🚀 {processingStats.fps} FPS</Badge>;
-    if (processingStats.fps > 15) return <Badge className="bg-yellow-500">⚡ {processingStats.fps} FPS</Badge>;
-    return <Badge className="bg-red-500">🐌 {processingStats.fps} FPS</Badge>;
+    if (processingStats.fps > 30) return <Badge className="bg-green-500"><MdRocket className="mr-1" /> {processingStats.fps} FPS</Badge>;
+    if (processingStats.fps > 15) return <Badge className="bg-yellow-500"><IoMdThunderstorm className="mr-1" /> {processingStats.fps} FPS</Badge>;
+    return <Badge className="bg-red-500"><RiSlowDownLine className="mr-1" /> {processingStats.fps} FPS</Badge>;
   };
 
   const getConnectionStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge className="bg-green-500">🟢 Active</Badge>;
+        return <Badge className="bg-green-500"><FaCircle className="mr-1" /> Active</Badge>;
       case 'listening':
-        return <Badge className="bg-blue-500">🔊 Listening</Badge>;
+        return <Badge className="bg-blue-500 flex items-center"><GrAssistListening className='w-6 h-6' /><p>Listening</p> </Badge>;
       case 'inactive':
-        return <Badge variant="secondary">⚪ Inactive</Badge>;
+        return <Badge variant="secondary"><FaCircle className="mr-1" /> Inactive</Badge>;
       default:
-        return <Badge variant="outline">❓ Unknown</Badge>;
+        return <Badge variant="outline"><BiQuestionMark/> Unknown</Badge>;
     }
   };
 
@@ -489,7 +495,7 @@ const SpeedChart: React.FC = () => {
                   className="bg-green-600 hover:bg-green-700"
                   size="sm"
                 >
-                  ▶️ Start
+                  <FaPlay className="mr-1" /> Start
                 </Button>
                 <Button 
                   onClick={simulatorStatus.isPaused ? handleSimulatorResume : handleSimulatorPause}
@@ -497,7 +503,7 @@ const SpeedChart: React.FC = () => {
                   className="bg-yellow-600 hover:bg-yellow-700"
                   size="sm"
                 >
-                  {simulatorStatus.isPaused ? '▶️ Resume' : '⏸️ Pause'}
+                  {simulatorStatus.isPaused ? <FaPlay className="mr-1" /> : <FaPause className="mr-1" />} {simulatorStatus.isPaused ? 'Resume' : 'Pause'}
                 </Button>
                 <Button 
                   onClick={handleSimulatorStop}
@@ -505,7 +511,7 @@ const SpeedChart: React.FC = () => {
                   className="bg-red-600 hover:bg-red-700"
                   size="sm"
                 >
-                  ⏹️ Stop
+                  <FaStop className="mr-1" /> Stop
                 </Button>
               </div>
               <div className="text-xs text-slate-400">
@@ -522,7 +528,7 @@ const SpeedChart: React.FC = () => {
                   className="bg-green-600 hover:bg-green-700"
                   size="sm"
                 >
-                  ▶️ Start
+                  <FaPlay className="mr-1" /> Start
                 </Button>
                 <Button 
                   onClick={handleChartPause}
@@ -530,14 +536,14 @@ const SpeedChart: React.FC = () => {
                   className="bg-yellow-600 hover:bg-yellow-700"
                   size="sm"
                 >
-                  ⏸️ Pause
+                  <FaPause className="mr-1" /> Pause
                 </Button>
                 <Button 
                   onClick={handleChartClear}
                   className="bg-red-600 hover:bg-red-700"
                   size="sm"
                 >
-                  🗑️ Clear
+                  <FaTrash className="mr-1" /> Clear
                 </Button>
               </div>
               <div className="text-xs text-slate-400">
@@ -618,7 +624,7 @@ const SpeedChart: React.FC = () => {
             <div className="flex items-center space-x-2">
               {getStatusBadge()}
               {getPerformanceBadge()}
-              {chartPaused && <Badge className="bg-yellow-500">⏸️ PAUSED</Badge>}
+              {chartPaused && <Badge className="bg-yellow-500"><FaPause className="mr-1" /> PAUSED</Badge>}
             </div>
           </div>
           <Separator className="bg-slate-700" />
