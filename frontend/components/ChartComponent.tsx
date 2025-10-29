@@ -205,7 +205,7 @@ const SpeedChart: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    socketRef.current = io('http://localhost:8000');
+    socketRef.current = io('https://live-charts.vercel.app/');
 
     socketRef.current.on('connect', () => {
       console.log('Connected to server');
